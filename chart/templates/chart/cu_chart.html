@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% block style %}
+<style>
+    img {
+    max-width: 100%;
+    height: auto !important;
+    }
+
+        /* Slider */
+
+    .slick-slide {
+        margin: 0px 20px;
+    }
+
+    .slick-slide img {
+        width: 100%;
+    }
+
+    .slick-slider
+    {
+        position: relative;
+        display: block;
+        box-sizing: border-box;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+                user-select: none;
+        -webkit-touch-callout: none;
+        -khtml-user-select: none;
+        -ms-touch-action: pan-y;
+            touch-action: pan-y;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .slick-list
+    {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+    .slick-list:focus
+    {
+        outline: none;
+    }
+    .slick-list.dragging
+    {
+        cursor: pointer;
+        cursor: hand;
+    }
+
+    .slick-slider .slick-track,
+    .slick-slider .slick-list
+    {
+        -webkit-transform: translate3d(0, 0, 0);
+           -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+             -o-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+    }
+
+    .slick-track
+    {
+        position: relative;
+        top: 0;
+        left: 0;
+        display: block;
+    }
+    .slick-track:before,
+    .slick-track:after
+    {
+        display: table;
+        content: '';
+    }
+    .slick-track:after
+    {
+        clear: both;
+    }
+    .slick-loading .slick-track
+    {
+        visibility: hidden;
+    }
+
+    .slick-slide
+    {
+        display: none;
+        float: left;
+        height: 100%;
+        min-height: 1px;
+    }
+    [dir='rtl'] .slick-slide
+    {
+        float: right;
+    }
+    .slick-slide img
+    {
+        display: block;
+    }
+    .slick-slide.slick-loading img
+    {
+        display: none;
+    }
+    .slick-slide.dragging img
+    {
+        pointer-events: none;
+    }
+    .slick-initialized .slick-slide
+    {
+        display: block;
+    }
+    .slick-loading .slick-slide
+    {
+        visibility: hidden;
+    }
+    .slick-vertical .slick-slide
+    {
+        display: block;
+        height: auto;
+        border: 1px solid transparent;
+    }
+    .slick-arrow.slick-hidden {
+        display: none;
+    }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+				<span class="breadcrumb-item f1-s-3 cl9">
+					Charts
+				</span>
+			</div>
+		</div>
+	</div>
+
+    <!-- Page heading -->
+	<div class="container p-t-4 p-b-100">
+		<h2 class="f1-l-1 cl2" style="text-align: center;">
+			CU TOP 30
+		</h2>
+	</div>
+
+    {% if new_tracks %}
+    <div class="container p-b-60">
+        <div class="how2 how2-cl1 flex-s-c">
+            <h3 class="f1-m-2 cl12 tab01-title">
+                Recent Tracks
+            </h3>
+        </div>
+       <section class="customer-logos slider pt-3">
+           {% for data in new_tracks %}
+               {% if data.link %}
+                    <div class="slide"><a target="_blank" href="{{ data.link }}"><img src="{{ data.artwork.url }}"></a>
+                        <div class="f1-s-4" style="text-align: center;"><a target="_blank" style="color: grey" href="{{ data.link }}">{{ data.title|capfirst }} - {{ data.artist|capfirst }}</a></div>
+                    </div>
+               {% else %}
+                    <div class="slide"><img src="{{ data.artwork.url }}">
+                        <div class="f1-s-4" style="text-align: center;">{{ data.title }} - {{ data.artist }}</div>
+                    </div>
+               {% endif %}
+           {% endfor %}
+       </section>
+    </div>
+    {% endif %}
+
+    {% if cutop30 %}
+    <div class="container">
+        <div style="text-align: center; color: grey; font-size: 18px; font-weight: bold;">Week of <span style="color: darkgrey">{{ charted|date:'F j, Y' }}</span></div>
+        <table class="chart-table">
+            {% for data in cutop30 %}
+                {% if data.link %}
+                    <tr>
+                        <td>{{ data.uni_rank }}</td>
+                        <td><a href="{{ data.link }}" target="_blank"><img src="{{ data.artwork.url }}" alt="#" loading="lazy"></a></td>
+                        <td>
+                            <a href="{{ data.link }}" target="_blank"><h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ data.title|capfirst }}</h4></a>
+                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ data.artist|capfirst }}</p>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ data.uni_rank }}</td>
+                        <td><img src="{{ data.artwork.url }}" alt="#" loading="lazy"></td>
+                        <td>
+                            <h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ data.title|capfirst }}</h4>
+                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ data.artist|capfirst }}</p>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+        <div class="m-t-120">
+        {% include "banner.html" %}
+        </div>
+    </div>
+    {% endif %}
+{% endblock content %}
+
+{% block js %}
+    <script>
+    $(document).ready(function(){
+    $('.customer-logos').slick({
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1500,
+        arrows: false,
+        dots: false,
+        pauseOnHover: false,
+        responsive: [{
+            breakpoint: 768,
+            settings: {
+                slidesToShow: 3
+            }
+        }, {
+            breakpoint: 520,
+            settings: {
+                slidesToShow: 2
+            }
+        }]
+    });
+});
+    </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
+{% endblock js %}

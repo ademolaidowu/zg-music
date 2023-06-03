@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block nav %}
+    {% include "account/accountnav.html" %}
+{% endblock nav %}
+
+
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+                <span class="breadcrumb-item f1-s-3 cl9">
+					Account
+				</span>
+				<span class="breadcrumb-item f1-s-3 cl9">
+					Sign Up
+				</span>
+			</div>
+		</div>
+	</div>
+
+    <!-- Page heading -->
+	<div class="container p-t-4 p-b-100">
+		<h2 class="f1-l-1 cl2" style="text-align: center">
+			Sign Up
+		</h2>
+	</div>
+
+    <div class="container">
+    	<div class="row justify-content-center">
+		<div class="col-lg-6">
+	        <form method="POST">{% csrf_token %}
+	            <fieldset class="form-group">
+	                {{ form|crispy }}
+	            </fieldset>
+	            <div class="form-group">
+	                <button class="btn btn-dark btn-default" type="submit">Sign Up</button>
+	            </div>
+	        </form>
+	        <div class="border-top pt-2 pb-3">
+	            <small class="text-muted">
+	                Already Have An Account? <a style="color: darkred;" class="ml-2" href="{% url 'account:login' %}">Sign In</a>
+	            </small>
+	        </div>
+    	</div>
+    	</div>
+    </div>
+{% endblock content %}

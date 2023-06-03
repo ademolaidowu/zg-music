@@ -1,0 +1,30 @@
+<ul class="main-menu justify-content-center">
+    <li><a href="{% url 'home' %}">HOME</a></li>
+
+    <li><a href="{% url 'chart:zgm-chart' %}">CHARTS</a></li>
+
+    <li class="main-menu-active">
+        <a href="{% url 'blog:blog-list' %}">BLOG</a>
+    </li>
+
+    <li><a href="{% url 'playlist-view' %}">PLAYLISTS</a></li>
+
+    <li><a href="{% url 'artist:artist-view' %}">ARTISTS</a></li>
+
+    <li><a href="{% url 'video-view' %}">VIDEOS</a></li>
+
+    <li class="main-menu-dropdown">
+        <a href="#">ACCOUNT</a>
+        <ul class="sub-menu">
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'account:profile' %}">Profile</a></li>
+                <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+                <li><a href="{% url 'account:logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'account:register' %}">Sign Up</a></li>
+                <li><a href="{% url 'account:login' %}">Log In</a></li>
+                <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+            {% endif %}
+        </ul>
+    </li>
+</ul>

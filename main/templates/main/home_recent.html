@@ -1,0 +1,22 @@
+{% if recent %}
+<div class="container p-t-60">
+    <div class="how2 how2-cl1 flex-s-c">
+        <h3 class="f1-m-2 cl12 tab01-title">
+            Recent Tracks
+        </h3>
+    </div>
+   <section class="customer-logos slider pt-3">
+       {% for data in recent %}
+           {% if data.link %}
+                <div class="slide"><a target="_blank" href="{{ data.link }}"><img src="{{ data.artwork.url }}"></a>
+                    <div class="f1-s-4" style="text-align: center;"><a target="_blank" style="color: grey" href="{{ data.link }}">{{ data.title|capfirst }} - {{ data.artist|capfirst }}</a></div>
+                </div>
+           {% else %}
+                <div class="slide"><img src="{{ data.artwork.url }}">
+                    <div class="f1-s-4" style="text-align: center;">{{ data.title }} - {{ data.artist }}</div>
+                </div>
+           {% endif %}
+       {% endfor %}
+   </section>
+</div>
+{% endif %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block style %}
+<style>
+    .page-header { background: url(../../../static/images/dc.jpg)no-repeat; position: relative; background-size: cover; }
+    .page-caption { padding-top: 170px; padding-bottom: 174px; }
+    .page-title { font-size: 46px; line-height: 1; color: #fff; font-weight: 600; text-align: center; }
+
+    .card-section { position: relative; bottom: 60px; }
+    .card-block { padding: 80px; }
+    .section-title { margin-bottom: 60px; }
+</style>
+{% endblock style %}
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+				<span class="breadcrumb-item f1-s-3 cl9">
+					About
+				</span>
+			</div>
+		</div>
+	</div>
+
+    <!-- Page heading -->
+	<div class="container p-t-4 p-b-100">
+		<h2 class="f1-l-1 cl2" style="text-align: center">
+			About Us
+		</h2>
+	</div>
+
+
+
+    <div class="container">
+        <div class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-caption">
+                            <h1 class="page-title">ZeroGravity Music</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.page-header-->
+        <!-- news -->
+        <div class="card-section">
+            <div class="container">
+                <div class="card-block bg-white mb30">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <!-- section-title -->
+                            <div class="section-title mb-0">
+                                <span>
+                                    YOUTH HUB
+                                </span>
+                                <p><span>
+                                    The right place to discover young talents and creatives
+                                </span></p>
+                                <span>
+                                    Music | Art | Fashion | Lifestyle
+                                </span></p>
+                            </div>
+                            <!-- /.section-title -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                        ZeroGravity Music
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

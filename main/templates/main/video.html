@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block nav %}
+    <ul class="main-menu justify-content-center">
+        <li><a href="{% url 'home' %}">HOME</a></li>
+
+        <li><a href="{% url 'chart:zgm-chart' %}">CHARTS</a></li>
+
+        <li><a href="{% url 'blog:blog-list' %}">BLOG</a></li>
+
+        <li><a href="{% url 'playlist-view' %}">PLAYLISTS</a></li>
+
+        <li><a href="{% url 'artist:artist-view' %}">ARTISTS</a></li>
+
+        <li class="main-menu-active">
+            <a href="{% url 'video-view' %}">VIDEOS</a>
+        </li>
+
+        <li class="main-menu-dropdown">
+            <a href="#">ACCOUNT</a>
+            <ul class="sub-menu">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'account:profile' %}">Profile</a></li>
+                    <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+                    <li><a href="{% url 'account:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'account:register' %}">Sign Up</a></li>
+                    <li><a href="{% url 'account:login' %}">Log In</a></li>
+                    <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+                {% endif %}
+            </ul>
+        </li>
+    </ul>
+{% endblock nav %}
+
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+				<span class="breadcrumb-item f1-s-3 cl9">
+					Videos
+				</span>
+			</div>
+		</div>
+	</div>
+
+    <!-- Page heading -->
+	<div class="container p-t-4 p-b-100">
+		<h2 class="f1-l-1 cl2" style="text-align: center">
+			Videos
+		</h2>
+	</div>
+
+    <div class="container">
+        <div class="row p-b-100">
+            {% for data in videos %}
+            <div class="videomedia  col-lg-6 col-md-6">
+                <div class="embed-responsive embed-responsive-16by9">
+                  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ data.link }}" allowfullscreen></iframe>
+                </div>
+                <span class="f1-m-1" style="font-weight: bold; color: darkred;">{{ data.title }}</span>
+                <h5 class="f1-s-7" style="color: grey;">{{ data.feature|capfirst }}</h5>
+                <p class="f2-s-1">{{ data.description|capfirst }}</p><br><br>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

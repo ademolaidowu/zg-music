@@ -1,0 +1,164 @@
+{% load static %}
+<!-- Artists  -->
+{% if artists %}
+<div class="p-b-25">
+	<div class="how2 how2-cl1 flex-sb-c m-r-10 m-r-0-sr991">
+		<h3 class="f1-m-2 cl12 tab01-title">
+			Artists
+		</h3>
+
+		<a href="{% url 'artist:artist-view' %}" class="tab01-link f1-s-1 cl9 hov-cl10 trans-03">
+			View all
+			<i class="fs-12 m-l-5 fa fa-caret-right"></i>
+		</a>
+	</div>
+
+	<div class="flex-wr-sb-s p-t-35">
+        <div class="row">
+            {% for data in artists %}
+                <div class="col-6 col-sm-6 col-md-4 col-lg-4">
+                    <div class="our-team">
+                        <div class="picture">
+                            <img class="img-fluid" src="{{ data.image.url }}">
+                        </div>
+                        <div class="team-content">
+                            <div class="name">
+                                <a href="#aboutModal" data-toggle="modal" data-target="#{{ data.slug }}" style="color: darkred; font-size: 18px;"><strong>{{ data.name }}</strong></a>
+                            </div>
+                            <h4 class="title"><strong>{{ data.category.all|join:'/' }}</strong></h4>
+                        </div>
+                        <ul class="social">
+                            {% if data.ig_page == None %}
+                                <li><a href="#" class="fa fa-instagram" aria-hidden="true"></a></li>
+                            {% else %}
+                                <li><a href="https://instagram.com/{{ data.ig_page }}" class="fa fa-instagram" aria-hidden="true" target="_blank"></a></li>
+                            {% endif %}
+
+                            {% if data.twitter_page == None %}
+                                <li><a href="#" class="fa fa-twitter" aria-hidden="true"></a></li>
+                            {% else %}
+                                <li><a href="https://twitter.com/{{ data.twitter_page }}" class="fa fa-twitter" aria-hidden="true" target="_blank"></a></li>
+                            {% endif %}
+
+                            {% if data.itunes == None %}
+                                <li><a href="#" class="fab fa-itunes-note" aria-hidden="true"></a></li>
+                            {% else %}
+                                <li><a href="https://music.apple.com/ng/artist/{{ data.itunes }}" class="fab fa-itunes-note" aria-hidden="true" target="_blank"></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="{{ data.slug }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title" id="myModalLabel"><strong>More About {{ data.name }}</strong></h4>
+                            </div>
+                            <div class="modal-body">
+                                <center>
+                                <img src="{{ data.image.url }}" name="aboutme" width="140" height="140" border="0" class="img-circle">
+                                <div class="media-heading" style="color: darkred; font-size: 30px;"><strong>{{ data.name }}</strong></div>
+                                    <span><strong>{{ data.category.all|join:', ' }}</strong></span><br>
+                                </center>
+                                <hr>
+                                <center>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-6 col-lg-6 col-md-6 col-sm-6">
+                                        <p class="text-left"><strong>Social: </strong></p>
+                                            {% if data.ig_page == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-danger btn-block disabled">Instagram</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://instagram.com/{{ data.ig_page }}" role="button" class="btn btn-danger btn-block" target="_blank">Instagram</a></p>
+                                            {% endif %}
+
+                                            {% if data.twitter_page == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-info btn-block disabled">Twitter</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://twitter.com/{{ data.twitter_page }}" role="button" class="btn btn-info btn-block" target="_blank">Twitter</a></p>
+                                            {% endif %}
+                                        </div>
+
+                                        {% if data.paid %}
+                                        <div class="col-6 col-lg-6 col-md-6 col-sm-6">
+                                        <p class="text-left"><strong>Profile: </strong></p>
+                                            {% if data.itunes == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-danger btn-block disabled">Apple Music</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://music.apple.com/ng/artist/{{ data.itunes }}" role="button" class="btn btn-danger btn-block" target="_blank">Apple Music</a></p>
+                                            {% endif %}
+
+                                            {% if data.audiomack == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-warning btn-block disabled">Audiomack</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://audiomack.com/{{ data.audiomack }}" role="button" class="btn btn-warning btn-block" target="_blank">Audiomack</a></p>
+                                            {% endif %}
+
+                                            {% if data.soundcloud == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-secondary btn-block disabled">SoundCloud</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://soundcloud.com/{{ data.soundcloud }}" role="button" class="btn btn-secondary btn-block" target="_blank">SoundCloud</a></p>
+                                            {% endif %}
+                                        </div>
+                                        {% else %}
+                                            <div class="col-6 col-lg-6 col-md-6 col-sm-6">
+                                            <p class="text-left"><strong>Profile: </strong></p>
+                                            <p class="m-b-4"><button role="button" class="btn btn-danger btn-block disabled">Apple Music</button></p>
+
+                                            <p class="m-b-4"><button role="button" class="btn btn-warning btn-block disabled">Audiomack</button></p>
+
+                                            <p class="m-b-4"><button role="button" class="btn btn-secondary btn-block disabled">SoundCloud</button></p>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                {% if data.paid %}
+                                <hr>
+                                <div class="container">
+                                <p class="text-left"><strong>Recent Tracks: </strong></p>
+                                {% for song in tracks %}
+                                    {% for item in song.artist_tag.all %}
+                                        {% if data.slug == item.slug %}
+                                            <table class="chart-table">
+                                                {% if song.link %}
+                                                    <tr>
+                                                        <td><a href="{{ song.link }}" target="_blank"><img src="{{ song.artwork.url }}" alt="#" loading="lazy" style="display: block; margin-left: 10px;"></a></td>
+                                                        <td style="float: left; margin-left: 20px; display: inline-block; width: 200px">
+                                                            <a href="{{ song.link }}" target="_blank"><h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ song.title|capfirst }}</h4></a>
+                                                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ song.artist|capfirst }}</p>
+                                                        </td>
+                                                    </tr>
+                                                {% else %}
+                                                    <tr>
+                                                        <td><img src="{{ song.artwork.url }}" alt="#" style="display: block; margin-left: 10px;"></td>
+                                                        <td style="float: left; margin-left: 20px; display: inline-block; width: 200px">
+                                                            <h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ song.title|capfirst }}</h4>
+                                                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ song.artist|capfirst }}</p>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                        </table>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                </div>
+                                {% endif %}
+                                <br>
+                                </center>
+                            </div>
+                            <div class="modal-footer">
+                                <center>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close </button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+	</div>
+</div>
+{% endif %}

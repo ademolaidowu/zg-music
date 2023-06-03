@@ -1,0 +1,160 @@
+{% load static %}
+<!-- Headline -->
+<div class="container">
+	<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+		<div class="f2-s-1 p-r-30 size-w-0 m-tb-6 flex-wr-s-c">
+			<span class="text-uppercase cl2 p-r-8">
+				Latest Blogs:
+			</span>
+            {% if blogs %}
+			<span class="dis-inline-block cl6 slide100-txt pos-relative size-w-0" data-in="fadeInDown" data-out="fadeOutDown">
+                {% for data in blogs %}
+                    {% if forloop.counter <= 4 %}
+                <span class="dis-inline-block slide100-txt-item animated visible-false">
+					{{ data.title }}
+				</span>
+                    {% endif %}
+				{% endfor %}
+			</span>
+            {% endif %}
+		</div>
+	</div>
+</div>
+
+<!-- Feature post -->
+<section class="bg0">
+    {% if request.user_agent.is_pc or request.user_agent.is_tablet %}
+	<div class="container">
+		<div class="row m-rl--1">
+			<div class="col-md-6 p-rl-1 p-b-2">
+				<div class="bg-img1 size-a-3 how1 pos-relative" style="background-image: url(../../../static/images/homebg.jpg);">
+					<a href="{% url 'chart:zgm-chart' %}" class="dis-block how1-child1 trans-03"></a>
+
+					<div class="flex-col-e-s s-full p-rl-25 p-tb-20">
+						<a href="#" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+							ZGM TOP 50 - Song Of The Week
+						</a>
+                        {% if zgmtop10 %}
+                            {% if zgmtop10.first.link %}
+                                <h3 class="how1-child2 m-t-14 m-b-10">
+                                    <a href="{{ zgmtop10.first.link }}" target="_blank" class="how-txt1 size-a-6 f1-m-5 cl0 hov-cl10 trans-03" style="color: lightgrey;">
+                                        {{ zgmtop10.first.title|capfirst }} <span class="f1-m-2">by {{ zgmtop10.first.artist|capfirst }}</span>
+                                    </a>
+                                </h3>
+                            {% else %}
+                                <h3 class="how1-child2 m-t-14 m-b-10">
+                                    <span class="how-txt1 size-a-6 f1-m-5 cl0 hov-cl10 trans-03" style="color: lightgrey;">
+                                        {{ zgmtop10.first.title|capfirst }} <span class="f1-m-2">by {{ zgmtop10.first.artist|capfirst }}</span>
+                                    </span>
+                                </h3>
+                            {% endif %}
+                        {% endif %}
+					</div>
+				</div>
+			</div>
+
+            {% if blogs %}
+			<div class="col-md-6 p-rl-1">
+				<div class="row m-rl--1">
+					<div class="col-12 p-rl-1 p-b-2">
+						<div class="bg-img1 size-a-4 how1 pos-relative" style="background-image: url({{ blogs.first.image.url }});">
+							<a href="{% url 'blog:blog-detail' blogs.first.slug %}" class="dis-block how1-child1 trans-03"></a>
+
+							<div class="flex-col-e-s s-full p-rl-25 p-tb-24">
+								<a href="{% url 'blog:blog-list' %}" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+									Latest Blog
+								</a>
+
+								<h3 class="how1-child2 m-t-14">
+									<a href="{% url 'blog:blog-detail' blogs.first.slug %}" class="how-txt1 size-a-7 f1-l-2 cl0 hov-cl10 trans-03" style="color: lightgrey;">
+										{{ blogs.first.title }}
+									</a>
+								</h3>
+							</div>
+						</div>
+					</div>
+                    {% for data in blogs %}
+                        {% if forloop.counter > 1 and forloop.counter <= 3 %}
+					<div class="col-sm-6 p-rl-1 p-b-2">
+						<div class="bg-img1 size-a-5 how1 pos-relative" style="background-image: url({{ data.image.url }});">
+							<a href="{% url 'blog:blog-detail' data.slug %}" class="dis-block how1-child1 trans-03"></a>
+
+							<div class="flex-col-e-s s-full p-rl-25 p-tb-20">
+								<a href="{% url 'blog:blog-list' %}" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+									Blog
+								</a>
+
+								<h3 class="how1-child2 m-t-14">
+									<a href="{% url 'blog:blog-detail' data.slug %}" class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
+										{{ data.title }}
+									</a>
+								</h3>
+							</div>
+						</div>
+					</div>
+                        {% endif %}
+                    {% endfor %}
+				</div>
+			</div>
+            {% endif %}
+		</div>
+	</div>
+
+	{% elif request.user_agent.is_mobile %}
+    <div class="container">
+		<div class="row m-rl--1">
+			<div class="col-md-6 p-rl-1 p-b-2">
+				<div class="bg-img1 size-a-4 how1 pos-relative" style="background-image: url({{ zgmtop10.first.artwork.url }});">
+					<a href="{% url 'chart:zgm-chart' %}" class="dis-block how1-child1 trans-03"></a>
+
+					<div class="flex-col-e-s s-full p-rl-25 p-tb-20">
+						<a href="#" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+							ZGM TOP 50 - Song Of The Week
+						</a>
+                        {% if zgmtop10 %}
+                            {% if zgmtop10.first.link %}
+                                <h3 class="how1-child2 m-t-14 m-b-10">
+                                    <a href="{{ zgmtop10.first.link }}" target="_blank" class="how-txt1 size-a-6 f1-m-5 cl0 hov-cl10 trans-03" style="color: lightgrey;">
+                                        {{ zgmtop10.first.title|capfirst }} <span class="f1-m-2">by {{ zgmtop10.first.artist|capfirst }}</span>
+                                    </a>
+                                </h3>
+                            {% else %}
+                                <h3 class="how1-child2 m-t-14 m-b-10">
+                                    <span class="how-txt1 size-a-6 f1-m-5 cl0 hov-cl10 trans-03" style="color: lightgrey;">
+                                        {{ zgmtop10.first.title|capfirst }} <span class="f1-m-2">by {{ zgmtop10.first.artist|capfirst }}</span>
+                                    </span>
+                                </h3>
+                            {% endif %}
+                        {% endif %}
+					</div>
+				</div>
+			</div>
+
+            {% if blogs %}
+			<div class="col-md-6 p-rl-1">
+				<div class="row m-rl--1">
+					<div class="col-12 p-rl-1 p-b-2">
+						<div class="bg-img1 size-a-4 how1 pos-relative" style="background-image: url({{ blogs.first.image.url }});">
+							<a href="{% url 'blog:blog-detail' blogs.first.slug %}" class="dis-block how1-child1 trans-03"></a>
+
+							<div class="flex-col-e-s s-full p-rl-25 p-tb-24">
+								<a href="{% url 'blog:blog-list' %}" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+									Latest Blog
+								</a>
+
+								<h3 class="how1-child2 m-t-14">
+									<a href="{% url 'blog:blog-detail' blogs.first.slug %}" class="how-txt1 size-a-7 f1-l-2 cl0 hov-cl10 trans-03" style="color: lightgrey;">
+										{{ blogs.first.title }}
+									</a>
+								</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+            {% endif %}
+		</div>
+	</div>
+
+	{% endif %}
+</section>

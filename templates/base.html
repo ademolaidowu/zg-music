@@ -1,0 +1,428 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% if title %}
+	    <title>{{ title }}</title>
+    {% else %}
+        <title>ZeroGravity </title>
+    {% endif %}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block meta %}
+    {% endblock meta %}
+<!--===============================================================================================-->
+	<link rel="icon" type="image/ico" href="{% static 'images/icons/zgm.ico' %}"/>
+<!--===============================================================================================-->
+	{% block css %}
+	{% endblock css %}
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/fontawesome-5.0.8/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/iconic/css/material-design-iconic-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/util.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+<!--===============================================================================================-->
+	{% block style %}
+	{% endblock style %}
+
+	<!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '802305377061481');
+        fbq('track', 'PageView');
+    </script>
+
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=802305377061481&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+	<!-- Header -->
+	<header>
+		<!-- Header desktop -->
+		<div class="container-menu-desktop">
+			<div class="topbar">
+				<div class="content-topbar container h-100">
+					<div class="left-topbar">
+						<span class="left-topbar-item flex-wr-s-c">
+							<span>
+								{{ today|date:"l N j, Y" }}
+							</span>
+						</span>
+						<a href="{% url 'about-view' %}" class="left-topbar-item">
+							About
+						</a>
+
+						<a href="{% url 'contact-view' %}" class="left-topbar-item">
+							Contact
+						</a>
+
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'account:logout' %}" class="left-topbar-item">
+							Logout
+						</a>
+
+                        {% else %}
+						<a href="{% url 'account:register' %}" class="left-topbar-item">
+							Sign up
+						</a>
+
+						<a href="{% url 'account:login' %}" class="left-topbar-item">
+							Log in
+						</a>
+                        {% endif %}
+					</div>
+
+					<div class="right-topbar">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'account:profile' %}" class="m-r--4" style="color: lightgrey; font-size: 13px;">Welcome, {{ request.user.username|capfirst }}</a>
+                        {% endif %}
+
+						<a href="https://www.instagram.com/zerogravityy__" target="_blank">
+							<span class="fab fa-instagram"></span>
+						</a>
+
+						<a href="https://twitter.com/zerogravityy__" target="_blank">
+							<span class="fab fa-twitter"></span>
+						</a>
+
+						<a href="https://www.youtube.com/channel/UC4FiwnJ3R7o1Obhy0czRajQ" target="_blank">
+							<span class="fab fa-youtube"></span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Header Mobile -->
+			<div class="wrap-header-mobile">
+				<!-- Logo moblie -->
+				<div class="logo-mobile">
+					<a href="{% url 'home' %}">
+                        <img src="{% static 'images/icons/logo-01.png' %}" alt="LOGO">
+                    </a>
+				</div>
+
+				<!-- Button show menu -->
+				<div class="btn-show-menu-mobile hamburger hamburger--squeeze m-r--8">
+					<span class="hamburger-box">
+						<span class="hamburger-inner"></span>
+					</span>
+				</div>
+			</div>
+
+			<!-- Menu Mobile -->
+			<div class="menu-mobile">
+				<ul class="topbar-mobile">
+					<li class="left-topbar">
+						<span class="left-topbar-item flex-wr-s-c">
+							<span>
+								{{ today|date:"l N j, Y" }}
+							</span>
+						</span>
+					</li>
+
+					<li class="left-topbar">
+						<a href="{% url 'about-view' %}" class="left-topbar-item">
+							About
+						</a>
+
+						<a href="{% url 'contact-view' %}" class="left-topbar-item">
+							Contact
+						</a>
+
+                       {% if user.is_authenticated %}
+                        <a href="{% url 'account:logout' %}" class="left-topbar-item">
+							Logout
+						</a>
+
+                        {% else %}
+						<a href="{% url 'account:register' %}" class="left-topbar-item">
+							Sign up
+						</a>
+
+						<a href="{% url 'account:login' %}" class="left-topbar-item">
+							Log in
+						</a>
+                        {% endif %}
+					</li>
+
+					<li class="right-topbar">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'account:profile' %}" class="m-r--4" style="color: lightgrey; font-size: 13px;">Welcome, {{ request.user.username|capfirst }}</a>
+                        {% endif %}
+
+						<a href="https://www.instagram.com/zerogravityy__" target="_blank">
+							<span class="fab fa-instagram"></span>
+						</a>
+
+						<a href="https://twitter.com/zerogravityy__" target="_blank">
+							<span class="fab fa-twitter"></span>
+						</a>
+
+						<a href="https://www.youtube.com/channel/UC4FiwnJ3R7o1Obhy0czRajQ" target="_blank">
+							<span class="fab fa-youtube"></span>
+						</a>
+					</li>
+				</ul>
+
+				<ul class="main-menu-m">
+					<li><a href="{% url 'home' %}">HOME</a></li>
+
+                    <li><a href="{% url 'chart:zgm-chart' %}">CHARTS</a></li>
+
+                    <li><a href="{% url 'blog:blog-list' %}">BLOG</a></li>
+
+					<li><a href="{% url 'playlist-view' %}">PLAYLISTS</a></li>
+
+					<li><a href="{% url 'artist:artist-view' %}">ARTISTS</a></li>
+
+					<li><a href="{% url 'video-view' %}">VIDEOS</a></li>
+
+					<li>
+						<a href="{% url 'account:profile' %}">ACCOUNT</a>
+						<ul class="sub-menu-m">
+                            {% if user.is_authenticated %}
+							    <li><a href="{% url 'account:profile' %}">Profile</a></li>
+                                <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+							    <li><a href="{% url 'account:logout' %}">Logout</a></li>
+                            {% else %}
+                                <li><a href="{% url 'account:register' %}">Sign Up</a></li>
+							    <li><a href="{% url 'account:login' %}">Log In</a></li>
+                                <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+                            {% endif %}
+						</ul>
+
+						<span class="arrow-main-menu-m">
+							<i class="fa fa-angle-right" aria-hidden="true"></i>
+						</span>
+					</li>
+				</ul>
+			</div>
+
+			<!--  -->
+			<div class="wrap-logo no-banner container">
+				<!-- Logo desktop -->
+				<div class="logo">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/icons/logo-01.png' %}" alt="LOGO">
+                    </a>
+				</div>
+			</div>
+
+			<!--  -->
+			<div class="wrap-main-nav">
+				<div class="main-nav">
+					<!-- Menu desktop -->
+					<nav class="menu-desktop">
+						<a class="logo-stick" href="{% url 'home' %}">
+							<img src="{% static 'images/icons/logo-01.png' %}" alt="LOGO">
+						</a>
+                        {% block nav %}
+						<ul class="main-menu justify-content-center">
+							<li class="main-menu-active">
+								<a href="{% url 'home' %}">HOME</a>
+							</li>
+
+                            <li><a href="{% url 'chart:zgm-chart' %}">CHARTS</a></li>
+
+							<li><a href="{% url 'blog:blog-list' %}">BLOG</a></li>
+
+                            <li><a href="{% url 'playlist-view' %}">PLAYLISTS</a></li>
+
+                            <li><a href="{% url 'artist:artist-view' %}">ARTISTS</a></li>
+
+                            <li><a href="{% url 'video-view' %}">VIDEOS</a></li>
+
+							<li class="main-menu-dropdown">
+								<a href="#">ACCOUNT</a>
+								<ul class="sub-menu">
+                                    {% if user.is_authenticated %}
+                                        <li><a href="{% url 'account:profile' %}">Profile</a></li>
+                                        <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+                                        <li><a href="{% url 'account:logout' %}">Logout</a></li>
+                                    {% else %}
+                                        <li><a href="{% url 'account:register' %}">Sign Up</a></li>
+									    <li><a href="{% url 'account:login' %}">Log In</a></li>
+                                        <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+                                    {% endif %}
+								</ul>
+							</li>
+						</ul>
+                        {% endblock nav %}
+					</nav>
+				</div>
+			</div>
+		</div>
+	</header>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="text-align: center">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+    {% block content %}
+    {% endblock content %}
+
+
+	<!-- Footer -->
+    <footer>
+        <div class="bg2 p-t-40 p-b-25">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-lg-4 p-b-20">
+                        <div class="size-h-3 flex-s-c">
+                            <h5 class="f1-m-7 cl0">
+                                ZGM Playlists
+                            </h5>
+                        </div>
+
+                        <ul class="m-t--12">
+                            <li class="how-bor1 p-rl-5 p-tb-10">
+                                <a href="https://music.apple.com/ng/playlist/cus-top-30/pl.u-e98lkNqtadaqLrg" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+                                    Apple Music: ZGM Next Gen Playlist
+                                </a>
+                            </li>
+
+                            <li class="how-bor1 p-rl-5 p-tb-10">
+                                <a href="https://audiomack.com/playlist/zerogravityy__/cus-top-30" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+                                    Audiomack: ZGM Next Gen Playlist
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 p-b-20">
+                        <div class="size-h-3 flex-s-c">
+                            <h5 class="f1-m-7 cl0">
+                                Recent Posts
+                            </h5>
+                        </div>
+
+                        <ul>
+                            {% for data in blogs %}
+                                {% if forloop.counter < 4 %}
+                                    <li class="flex-wr-sb-s p-b-20">
+                                        <a href="{% url 'blog:blog-detail' data.slug %}" class="size-w-4 wrap-pic-w hov1 trans-03">
+                                            <img src="{{ data.image.url }}" alt="IMG">
+                                        </a>
+                                        <div class="size-w-5">
+                                            <h6 class="p-b-5">
+                                                <a href="{% url 'blog:blog-detail' data.slug %}" class="f1-s-5 cl11 hov-cl10 trans-03">
+                                                    {{ data.title }}
+                                                </a>
+                                            </h6>
+                                            <span class="f1-s-3 cl6">
+                                                {{ data.updated|date:"N j, Y"}}
+                                            </span>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 p-b-20">
+                        <div class="size-h-3 flex-s-c">
+                            <a href="{% url 'home' %}">
+                                <img class="max-s-full" src="{% static 'images/icons/logo-02.png' %}" alt="IMG">
+                            </a>
+                        </div>
+
+                        <div>
+                            <p class="f1-s-1 cl11 p-b-16">
+                                This organization was created to provide a platform to promote
+                                the music artistry of underground and upcoming artists and create a youth community
+                                centered around music.
+
+                            </p>
+
+                            <p class="f1-s-1 cl11 p-b-16">
+                                Email: zgm@zerogravity.com.ng <br>
+                                Contact Us: 0706 189 3798, 0809 609 5385
+                            </p>
+
+                            <div class="p-t-10">
+                                <a href="https://www.instagram.com/zerogravityy__" target="_blank" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
+                                    <span class="fab fa-instagram"></span>
+                                </a>
+
+                                <a href="https://twitter.com/zerogravityy__" target="_blank" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
+                                    <span class="fab fa-twitter"></span>
+                                </a>
+
+                                <a href="https://www.youtube.com/channel/UC4FiwnJ3R7o1Obhy0czRajQ" target="_blank" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
+                                    <span class="fab fa-youtube"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<span class="fas fa-angle-up"></span>
+		</span>
+	</div>
+
+	<!-- Modal Video 01-->
+    {% if youtube_ads %}
+	<div class="modal fade" id="modal-video-01" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document" data-dismiss="modal">
+			<div class="close-mo-video-01 trans-0-4" data-dismiss="modal" aria-label="Close">&times;</div>
+
+			<div class="wrap-video-mo-01">
+				<div class="video-mo-01">
+					<iframe src="https://www.youtube.com/embed/{{ youtube_ads.first.youtube }}?rel=0" allowfullscreen></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+    {% endif %}
+
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'include_by_ajax/js/include_by_ajax.min.js' %}" defer></script>
+<!--===============================================================================================-->
+	{% block js %}
+	{% endblock js %}
+</body>
+</html>

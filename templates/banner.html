@@ -1,0 +1,19 @@
+{% load static %}
+<!-- Banner -->
+<div class="container m-t-10 m-b-15">
+    {% if h_ads %}
+        <div style="text-align: center; font-size: 7pt; font-weight: bold; letter-spacing: 2px;">ADVERTISEMENT</div>
+        <div class="flex-c-c">
+            <a href="{{ h_ads.first.link }}">
+                <img class="max-w-full" src="{{ h_ads.first.image.url }}" alt="IMG">
+            </a>
+        </div>
+    {% else %}
+        <div style="text-align: center; font-size: 7pt; font-weight: bold; letter-spacing: 2px;">ADVERTISEMENT</div>
+        <div class="flex-c-c">
+            <a href="#">
+                <img class="max-w-full" src="{% static 'images/banner-01.jpg' %}" alt="IMG">
+            </a>
+        </div>
+    {% endif %}
+</div>

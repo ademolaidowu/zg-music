@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block nav %}
+    {% include "account/accountnav.html" %}
+{% endblock nav %}
+
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+                <span class="breadcrumb-item f1-s-3 cl9">
+					Account
+                </span>
+				<span class="breadcrumb-item f1-s-3 cl9">
+					Artist Application
+				</span>
+			</div>
+		</div>
+	</div>
+
+    <!-- Page heading -->
+	<div class="container p-t-4 p-b-100">
+		<h2 class="f1-l-1 cl2" style="text-align: center">
+			Artist Application
+		</h2>
+    </div>
+
+    <div class="container pb-4">
+    	<div class="row justify-content-center">
+		<div class="col-lg-6">
+            <span style="text-align:center; color: darkred">The required fields are marked with *</span>
+	        <form class="mt-4" method="POST" enctype="multipart/form-data">{% csrf_token %}
+	            <fieldset class="form-group">
+	                {{ form|crispy }}
+	            </fieldset>
+	            <div class="form-group">
+	                <button class="btn btn-dark btn-default" type="submit">Submit</button>
+	            </div>
+	        </form>
+    	</div>
+    	</div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}500 Error Page{% endblock %}
+{% block style %}
+<style>
+    .lead{
+        background:#fff;
+        padding:4%;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+	<div class="page-wrap d-flex flex-row align-items-center">
+    <div class="container p-t-100 p-b-100">
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center">
+                <span class="display-1 d-block">500</span>
+                <div class="mb-4 lead">Oops! A Server Error Has Occured.</div>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock content %}

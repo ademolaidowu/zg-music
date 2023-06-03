@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% load include_by_ajax_tags %}
+{% load static %}
+{% block css %}
+	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
+	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+{% endblock css %}
+
+{% block style %}
+<style>
+    img {
+    max-width: 100%;
+    height: auto;
+    }
+
+        /* Slider */
+
+    .slick-slide {
+        margin: 0px 20px;
+    }
+
+    .slick-slide img {
+        width: 100%;
+    }
+
+    .slick-slider
+    {
+        position: relative;
+        display: block;
+        box-sizing: border-box;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+                user-select: none;
+        -webkit-touch-callout: none;
+        -khtml-user-select: none;
+        -ms-touch-action: pan-y;
+            touch-action: pan-y;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .slick-list
+    {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+    .slick-list:focus
+    {
+        outline: none;
+    }
+    .slick-list.dragging
+    {
+        cursor: pointer;
+        cursor: hand;
+    }
+
+    .slick-slider .slick-track,
+    .slick-slider .slick-list
+    {
+        -webkit-transform: translate3d(0, 0, 0);
+           -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+             -o-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+    }
+
+    .slick-track
+    {
+        position: relative;
+        top: 0;
+        left: 0;
+        display: block;
+    }
+    .slick-track:before,
+    .slick-track:after
+    {
+        display: table;
+        content: '';
+    }
+    .slick-track:after
+    {
+        clear: both;
+    }
+    .slick-loading .slick-track
+    {
+        visibility: hidden;
+    }
+
+    .slick-slide
+    {
+        display: none;
+        float: left;
+        height: 100%;
+        min-height: 1px;
+    }
+    [dir='rtl'] .slick-slide
+    {
+        float: right;
+    }
+    .slick-slide img
+    {
+        display: block;
+    }
+    .slick-slide.slick-loading img
+    {
+        display: none;
+    }
+    .slick-slide.dragging img
+    {
+        pointer-events: none;
+    }
+    .slick-initialized .slick-slide
+    {
+        display: block;
+    }
+    .slick-loading .slick-slide
+    {
+        visibility: hidden;
+    }
+    .slick-vertical .slick-slide
+    {
+        display: block;
+        height: auto;
+        border: 1px solid transparent;
+    }
+    .slick-arrow.slick-hidden {
+        display: none;
+    }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+
+	{% include "main/home_bg.html" %}
+
+    {% include "main/home_recent.html" %}
+
+	<section class="post bg0 p-t-50">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-10 col-lg-8">
+					<div class="p-r-10 p-rl-0-sr991 p-b-20">
+						{% include_by_ajax "main/home_chart.html" %}
+
+						{% include_by_ajax "main/home_blog.html" %}
+
+                        {% include "banner.html" %}
+
+						{% include_by_ajax "main/home_playlist.html" %}
+
+						{% include "main/home_video.html" %}
+
+                        {% include "main/home_artist.html" %}
+					</div>
+				</div>
+
+				{% include "sidebar.html" %}
+
+			</div>
+		</div>
+	</section>
+
+                {% include "banner.html" %}
+{% endblock content %}
+
+
+{% block js %}
+	<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+	<script type="text/javascript">
+	/* webflow only this section swiper pagination */
+	$(document).ready(function() {
+	  /* add html by js (no way to add this HTML by webflow UI beacuse this is CMS list*/
+	  var part1 = "<div class=swiper-pagination></div>";
+	  //  var part2 = '<div class="swiper-button-prev"></div>';
+	  //var part3 = '<div class="swiper-button-next"></div>';
+	  // var swiperString = part1.concat(part2, part3);
+	  $("#swiper-press").append(part1);
+	});
+
+	/* change active class when click */
+	$(".swiper-container-videos .swiper-wrapper .swiper-slide a").click(function() {
+	  $(this)
+	    .closest(".swiper-slide")
+	    .addClass("selected")
+	    .siblings()
+	    .removeClass("selected");
+	  mySwiper1.slideTo(mySwiper1.clickedIndex);
+	});
+
+	$(".swiper-container-videos .swiper-slide")
+	  .first()
+	  .addClass("selected");
+
+	/* 1 of 2 : SWIPER */
+	var mySwiper1 = new Swiper(".swiper-container-videos", {
+	  // If loop true set photoswipe - counterEl: false
+	  loop: false,
+	  /* slidesPerView || auto - if you want to set width by css like flickity.js layout - in this case width:80% by CSS */
+	  slidesPerView: "auto",
+	  spaceBetween: 15,
+	  centeredSlides: false,
+
+	  // If we need pagination
+	  pagination: {
+	    el: ".swiper-pagination",
+	    clickable: true
+	  },
+	  navigation: {
+	    nextEl: ".swiper-custom-next",
+	    prevEl: ".swiper-custom-prev"
+	  },
+
+	  keyboard: {
+	    enabled: true,
+	    onlyInViewport: true
+	  }
+	});
+	</script>
+
+	<script type="text/javascript">
+	/* This is what makes the videos responsive. You can either include this in a <script> tag in the markup, or better yet, include it in a separata JavaScript file.*/
+	$(function() {
+	  //Look for all the videos inside this element and make them responsive
+	  $(".vid-container").fitVids();
+	});
+	</script>
+
+	<script type="text/javascript">
+	/*JS FOR SCROLLING THE ROW OF THUMBNAILS*/
+	$(document).ready(function() {
+	  $(".vid-item").each(function(index) {
+	    $(this).on("click", function() {
+	      var current_index = index + 1;
+	      $(".vid-item .thumb").removeClass("active");
+	      $(".vid-item:nth-child(" + current_index + ") .thumb").addClass("active");
+	    });
+	  });
+	});
+	</script>
+
+    <script>
+    $(document).ready(function(){
+    $('.customer-logos').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1500,
+        arrows: false,
+        dots: false,
+        pauseOnHover: false,
+        responsive: [{
+            breakpoint: 768,
+            settings: {
+                slidesToShow: 3
+            }
+        }, {
+            breakpoint: 520,
+            settings: {
+                slidesToShow: 2
+            }
+        }]
+    });
+});
+    </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
+{% endblock js %}

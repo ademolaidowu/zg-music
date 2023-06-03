@@ -1,0 +1,57 @@
+<!-- Videos  -->
+<div class="p-b-25">
+  <div class="how2 how2-cl1 flex-sb-c m-r-10 m-r-0-sr991">
+    <h3 class="f1-m-2 cl12 tab01-title">
+      Music Videos
+    </h3>
+
+    <a href="{% url 'video-view' %}" class="tab01-link f1-s-1 cl9 hov-cl10 trans-03">
+      View all
+      <i class="fs-12 m-l-5 fa fa-caret-right"></i>
+    </a>
+  </div>
+
+  <div>
+    <div class="pt-4" style="max-width: 650px; margin:0px auto">
+        <container class="vid-main-wrapper clearfix">
+        <!-- THE YOUTUBE PLAYER -->
+        <div class="vid-container">
+          <iframe id="vid_frame" src="https://www.youtube.com/embed/{{ videos.first.link }}?rel=0&showinfo=0&autohide=1" frameborder="0" width="560" height="315" allow="autoplay" allowfullscreen></iframe>
+        </div>
+        </container>
+      <section id="extra wrapper" style="position: relative; padding-right: 32px; padding-left: 32px; background: #f6f6f6;">
+
+        <!-- CUSTOM ARROWS -->
+        <button title="Next" class="swiper-custom-next" style="position: absolute; padding: 10px 2px; right: 1px;top: 32%; z-index: 100;
+        display: inline-block;cursor: pointer;">     
+    <svg style="position: relative; top: 1px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><g class="nc-icon-wrapper" fill="#111111"><polygon fill="#111111" points="4.9,15.7 3.4,14.3 9.7,8 3.4,1.7 4.9,0.3 12.6,8 "></polygon></g></svg>
+          </button>
+        <button title="Prev" class="swiper-custom-prev" style="position: absolute; padding: 10px 2px; left: 2px; top: 35%; z-index: 100;
+        display: inline-block;cursor: pointer;font-size: 15px;">
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><g class="nc-icon-wrapper" fill="#111111"><polygon fill="#111111" points="11.1,15.7 3.4,8 11.1,0.3 12.6,1.7 6.3,8 12.6,14.3 "></polygon></g></svg>
+        </button>
+
+        <!-- Swiper -->
+        <nav class="swiper-container swiper-container-videos slider-produtos-destaque">
+          <ol class="swiper-wrapper" style="list-style-type: none; padding: 0px;">
+            {% for data in videos %}
+            <li class="swiper-slide">
+              <a class="" href="javascript:void();" onClick="document.getElementById('vid_frame').src='https://youtube.com/embed/{{ data.link }}?autoplay=1&rel=0&showinfo=0&autohide=1'">
+              <span class="vid-thumb">
+              <br>
+         <img src="https://img.youtube.com/vi/{{ data.link }}/mqdefault.jpg" />
+            </span>
+                      <p class="desc">{{ data.feature }} - {{ data.title }}</p>
+                    </a>
+            </li>
+            {% endfor %}
+
+          </ol>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+          <!-- If we need navigation buttons -->
+        </nav>
+      </section>
+    </div>
+  </div>
+</div>

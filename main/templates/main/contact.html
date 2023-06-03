@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+				<span class="breadcrumb-item f1-s-3 cl9">
+					Contact
+				</span>
+			</div>
+		</div>
+	</div>
+
+    <!-- Page heading -->
+	<div class="container p-t-4 p-b-100">
+		<h2 class="f1-l-1 cl2" style="text-align: center">
+			Contact Us
+		</h2>
+	</div>
+
+
+    <div class="container p-b-60">
+        <div class="row">
+            <div class="col-md-8">
+              <form method="POST">{% csrf_token %}
+                <fieldset class="form-group">
+	                {{ form|crispy }}
+	            </fieldset>
+	            <div class="form-group">
+	                <button class="btn btn-dark btn-default" type="submit">Send</button>
+	            </div>
+              </form>
+            </div>
+
+            <div class="col-md-4">
+                <b>Customer service:</b> <br />
+                Phone: 0706 189 3798, 0809 609 5385<br />
+                E-mail: <a href="mailto:zgm@zerogravity.com.ng" target="_blank">zgm@zerogravity.com.ng</a><br />
+                <br /><br />
+
+                <b>Our Social Sites:</b><br />
+                <ul class="list-inline banner-social-buttons">
+                <li><a href="https://www.instagram.com/zerogravityy__" class="btn btn-default btn-default" style="color: grey;"><i class="fa fa-instagram"> <span> Instagram</span></i></a></li>
+                <li><a href="https://twitter.com/zerogravityy__" class="btn btn-default btn-default" style="color: grey;"><i class="fa fa-twitter"> <span> Twitter</span></i></a></li>
+                </ul>
+                <b>ZeroGravity Music</b> <br />
+            </div>
+        </div>
+    </div>
+{% endblock content %}

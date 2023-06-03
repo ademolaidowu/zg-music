@@ -1,0 +1,9 @@
+    def save(self, *args, **kwargs):
+        if self.image:
+            img = Img.open(self.image)
+            output = BytesIO()
+            new_image = img.resize((200, 200))
+            new_image.save(output, format='JPEG', quality=60)
+            output.seek(0)
+            self.image= InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+        super(Artist, self).save(*args, **kwargs)

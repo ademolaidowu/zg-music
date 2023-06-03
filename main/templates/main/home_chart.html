@@ -1,0 +1,45 @@
+{% if zgmtop10 %}
+<!-- Charts  -->
+<div class="p-b-25">
+	<div class="how2 how2-cl1 flex-sb-c m-r-10 m-r-0-sr991">
+		<h3 class="f1-m-2 cl12 tab01-title">
+			Charts - Top 50
+		</h3>
+
+		<a href="{% url 'chart:zgm-chart' %}" class="tab01-link f1-s-1 cl9 hov-cl10 trans-03">
+			View all
+			<i class="fs-12 m-l-5 fa fa-caret-right"></i>
+		</a>
+	</div>
+
+
+	<div class="p-t-35">
+        <div style="text-align: center; color: grey; font-size: 18px; font-weight: bold;">Week of <span style="color: darkgrey">{{ charted|date:'F j, Y' }}</span></div>
+        {% if zgmtop10 %}
+        <table class="chart-table">
+            {% for data in zgmtop10 %}
+                {% if data.link %}
+                    <tr>
+                        <td>{{ data.zgm_rank }}</td>
+                        <td><a href="{{ data.link }}" target="_blank"><img src="{{ data.artwork.url }}" alt="#" loading="lazy"></a></td>
+                        <td>
+                            <a href="{{ data.link }}" target="_blank"><h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ data.title|capfirst }}</h4></a>
+                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ data.artist|capfirst }}</p>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ data.zgm_rank }}</td>
+                        <td><img src="{{ data.artwork.url }}" alt="#" loading="lazy"></td>
+                        <td>
+                            <h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ data.title|capfirst }}</h4>
+                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ data.artist|capfirst }}</p>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        {% endif %}
+	</div>
+</div>
+{% endif %}

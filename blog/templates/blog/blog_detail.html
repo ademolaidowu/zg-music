@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load include_by_ajax_tags %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block meta %}
+        <!-- Twitter Share -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@zerogravityy__" />
+        <meta name="twitter:title" content="{{ title }}" />
+        <meta name="twitter:description" content="{{ posts.content|striptags|truncatewords_html:25 }}" />
+        <meta name="twitter:image" content="https://www.zerogravitymusic.xyz{{ posts.image.url }}" />
+
+        <!-- Facebook/LinkedIn Share -->
+        <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="{{ posts.title|safe }}" />
+        <meta property="og:description" content="{{ posts.content|striptags|truncatewords_html:25 }}" />
+        <meta property="og:image" content="https://www.zerogravitymusic.xyz{{ posts.image.url }}" />
+        <meta property="og:image:alt" content="ZeroGravity Music" />
+        <meta property="og:image:type" content="image/jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+{% endblock meta %}
+
+{% block style %}
+    <style>
+        img {
+        max-width: 100%;
+        height: auto !important;
+    }
+    </style>
+{% endblock %}
+
+{% block nav %}
+    {% include "blog/blognav.html" %}
+{% endblock nav %}
+
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="headline bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+
+				<a href="{% url 'blog:blog-list' %}" class="breadcrumb-item f1-s-3 cl9">
+					Blog
+				</a>
+
+				<span class="breadcrumb-item f1-s-3 cl9">
+					 {{ posts.title|capfirst|truncatechars_html:15|safe }}
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- Content -->
+	<section class="bg0 p-b-140">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-10 col-lg-8 p-b-30">
+					<div class="p-r-10 p-r-0-sr991">
+						<!-- Blog Detail -->
+						<div class="p-b-70">
+							<h3 class="page-header f1-l-3 cl2 p-b-10 p-t-33 respon2">
+								{{ posts.title|capfirst }}
+							</h3>
+
+							<div class="flex-wr-s-s">
+								<span class="f1-s-3 cl8 m-r-15">
+									<span class="f1-s-5">
+                                        by <a class="f1-s-5 cl8 hov-cl10 trans-03" href="{% url 'blog:author-detail' posts.author.slug %}">{{ posts.author }}</a>
+                                    </span>
+
+									<span class="m-rl-3 f1-s-5">-</span>
+
+									<span class="f1-s-5">
+										{{ posts.updated|date:"N j, Y"}}
+									</span>
+								</span>
+
+								<span class="f1-s-3 cl8 hov-cl10 trans-03 m-r-15">
+									{{ comments.count }} Comment{{ comments|pluralize }}
+								</span>
+							</div>
+
+                            <hr style="height:2px; border:none; color:#333; background-color:#333;" />
+
+							<div class="img-responsive wrap-pic-max-w" style="text-align: center;">
+								<img src="{{ posts.image.url }}" alt="IMG">
+							</div>
+
+                            <hr style="height:1px; border:none; color:#333; background-color:#333;" />
+
+                            <!-- Share -->
+							<div class="flex-s-s">
+								<span class="f1-s-12 cl5 p-t-1 m-r-15">
+									Share:
+								</span>
+
+								<div class="flex-wr-s-s size-w-0">
+									<a href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="dis-block f1-s-13 cl0 bg-facebook borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03">
+										<i class="fab fa-facebook-f m-r-7"></i>
+										Facebook
+									</a>
+
+									<a href="http://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}" target="_blank" class="dis-block f1-s-13 cl0 bg-twitter borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03">
+										<i class="fab fa-twitter m-r-7"></i>
+										Twitter
+									</a>
+
+								    <a href="mailto:?subject={{ posts.title|safe }}&body={{ posts.content|striptags|truncatewords_html:25 }} {{ request.build_absolute_uri }}" target="_blank" class="dis-block f1-s-13 cl0 bg-google borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03">
+										<i class="fas fa-envelope m-r-7"></i>
+										Mail
+									</a>
+
+									<a href="#" class="dis-block f1-s-13 cl0 bg-pinterest borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03">
+										<i class="fab fa-pinterest-p m-r-7"></i>
+										Pinterest
+									</a>
+								</div>
+							</div>
+
+							<div class="cl1 p-t-5 p-b-25" style="font-family: Droid Serif;">
+								{{ posts.content|safe }}
+							</div>
+
+                            {% if posts.tags %}
+							<!-- Tag -->
+							<div class="flex-s-s p-t-12 p-b-15">
+								<span class="f1-s-12 cl5 m-r-8">
+									Tags:
+								</span>
+								<div class="flex-wr-s-s size-w-0">
+                                    {% for item in posts.tags.all %}
+									<a href="{% url 'blog:tagblog-list' item.slug %}" class="f1-s-12 cl8 hov-link1 m-r-15">
+										{{ item }}
+									</a>
+                                    {% endfor %}
+								</div>
+							</div>
+                            {% endif %}
+
+							<!-- Share -->
+							<div class="flex-s-s">
+								<span class="f1-s-12 cl5 p-t-1 m-r-15">
+									Share:
+								</span>
+
+								<div class="flex-wr-s-s size-w-0">
+									<a href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="dis-block f1-s-13 cl0 bg-facebook borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03">
+										<i class="fab fa-facebook-f m-r-7"></i>
+										Facebook
+									</a>
+
+									<a href="http://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}" target="_blank" class="dis-block f1-s-13 cl0 bg-twitter borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03">
+										<i class="fab fa-twitter m-r-7"></i>
+										Twitter
+									</a>
+
+									<a href="mailto:?subject={{ posts.title|safe }}&body={{ posts.content|striptags|truncatewords_html:25 }} {{ request.build_absolute_uri }}" target="_blank" class="dis-block f1-s-13 cl0 bg-google borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03">
+										<i class="fas fa-envelope m-r-7"></i>
+										Mail
+									</a>
+
+									<a href="#" class="dis-block f1-s-13 cl0 bg-pinterest borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03">
+										<i class="fab fa-pinterest-p m-r-7"></i>
+										Pinterest
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- Leave a comment -->
+						<div>
+							<h4 class="f1-l-4 cl3 p-b-12">
+								{{ comments.count }} Comment{{ comments|pluralize }}
+							</h4>
+                                {% for data in comments %}
+                                    <blockquote class="blockquote">
+                                        <h6 class="mb-0">{{ data.content }}</h6>
+                                        <footer class="blockquote-footer">by <cite title="Source Title">{{ data.name }}</cite>
+                                            <button type="button" name="button" class="reply-btn btn-dark btn-sm ml-2">Reply</button>
+                                        </footer>
+                                    </blockquote>
+
+                                    <div class="replied-comments container mt-2" style="display:none;">
+                                        {% for reply in data.replies.all %}
+                                            <blockquote class="blockquote">
+                                                <p class="mb-0">{{ reply.content }}</p>
+                                                <footer class="blockquote-footer"><small>by <cite title="Source Title">{{ reply.name }}</cite></small></footer>
+                                            </blockquote>
+                                        {% endfor %}
+
+                                        <div class="form-group row">
+                                           <form method="POST">{% csrf_token %}
+                                                <input type="hidden" name="comment_id" value="{{ data.id }}">
+                                                {{ comment_form|crispy }}
+                                                  <input type="submit" value="Post Reply" class="btn btn-dark btn-md">
+                                            </form>
+                                        </div>
+                                    </div>
+                            {% endfor %}
+
+
+                            <h4 class="f1-l-4 cl3 p-t-30">
+								Leave a Comment
+							</h4>
+							<p class="f1-s-13 cl8 p-b-10">
+								Your email address will not be published.
+							</p>
+                            <div class="container-fluid mt-2">
+                                <div class="form-group row">
+                                    <form method="POST">{% csrf_token %}
+                                        {{ comment_form|crispy }}
+                                        <input type="submit" value="Post Comment" class="btn btn-dark btn-default">
+                                    </form>
+                                </div>
+                            </div>
+						</div>
+					</div>
+				</div>
+
+				{% include_by_ajax "sidebar.html" %}
+
+			</div>
+		</div>
+	</section>
+{% endblock content %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(event) {
+
+            $('.reply-btn').click(function () {
+                $(this).parent().parent().next('.replied-comments').fadeToggle()
+            });
+
+        });
+    </script>
+{% endblock js %}

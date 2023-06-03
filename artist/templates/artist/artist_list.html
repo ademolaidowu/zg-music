@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% block nav %}
+    <ul class="main-menu justify-content-center">
+        <li><a href="{% url 'home' %}">HOME</a></li>
+
+        <li><a href="{% url 'chart:zgm-chart' %}">CHARTS</a></li>
+
+        <li><a href="{% url 'blog:blog-list' %}">BLOG</a></li>
+
+        <li><a href="{% url 'playlist-view' %}">PLAYLISTS</a></li>
+
+        <li class="main-menu-active">
+            <a href="{% url 'artist:artist-view' %}">ARTISTS</a>
+        </li>
+
+        <li><a href="{% url 'video-view' %}">VIDEOS</a></li>
+
+        <li class="main-menu-dropdown">
+            <a href="#">ACCOUNT</a>
+            <ul class="sub-menu">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'account:profile' %}">Profile</a></li>
+                    <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+                    <li><a href="{% url 'account:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'account:register' %}">Sign Up</a></li>
+                    <li><a href="{% url 'account:login' %}">Log In</a></li>
+                    <li><a href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+                {% endif %}
+            </ul>
+        </li>
+    </ul>
+{% endblock nav %}
+
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+				<span class="breadcrumb-item f1-s-3 cl9">
+					Artists
+				</span>
+			</div>
+		</div>
+	</div>
+
+    <!-- Page heading -->
+	<div class="container p-t-4 p-b-100">
+		<h2 class="f1-l-1 cl2" style="text-align: center">
+			Artists
+		</h2>
+	</div>
+
+    <div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+            <div class="f2-s-1 p-r-30 m-tb-6">
+
+            </div>
+            <form class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+                <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="search" aria-label="Search" name="search" placeholder="Search" value="{{ request.GET.search }}">
+                <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03" type="submit">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+            </form>
+		</div>
+	</div>
+
+    <section class="artist-section">
+        <div class="container">
+            <div class="row">
+            {% if artist.count != 0 %}
+                {% for data in artist %}
+                <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+                    <div class="our-team">
+                        <div class="picture">
+                            <img class="img-fluid" src="{{ data.image.url }}">
+                        </div>
+                        <div class="team-content">
+                            <div class="name">
+                                <a href="#aboutModal" data-toggle="modal" data-target="#{{ data.slug }}" style="color: darkred; font-size: 18px;"><strong>{{ data.name }}</strong></a>
+                            </div>
+                            <h4 class="title"><strong>{{ data.category.all|join:'/' }}</strong></h4>
+                        </div>
+                        <ul class="social">
+                            {% if data.ig_page == None %}
+                                <li><a href="#" class="fa fa-instagram" aria-hidden="true"></a></li>
+                            {% else %}
+                                <li><a href="https://instagram.com/{{ data.ig_page }}" class="fa fa-instagram" target="_blank" aria-hidden="true"></a></li>
+                            {% endif %}
+
+                            {% if data.twitter_page == None %}
+                                <li><a href="#" class="fa fa-twitter" aria-hidden="true"></a></li>
+                            {% else %}
+                                <li><a href="https://twitter.com/{{ data.twitter_page }}" class="fa fa-twitter" target="_blank" aria-hidden="true"></a></li>
+                            {% endif %}
+
+                            {% if data.itunes == None %}
+                                <li><a href="#" class="fab fa-itunes-note" aria-hidden="true"></a></li>
+                            {% else %}
+                                <li><a href="https://music.apple.com/ng/artist/{{ data.itunes }}" class="fab fa-itunes-note" aria-hidden="true" target="_blank"></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="{{ data.slug }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title" id="myModalLabel"><strong>More About {{ data.name }}</strong></h4>
+                            </div>
+                            <div class="modal-body">
+                                <center>
+                                <img src="{{ data.image.url }}" name="aboutme" width="140" height="140" border="0" class="img-circle">
+                                <div class="media-heading" style="color: darkred; font-size: 30px;"><strong>{{ data.name }}</strong></div>
+                                    <span><strong>{{ data.category.all|join:', ' }}</strong></span><br>
+                                </center>
+                                <hr>
+                                <center>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-6 col-lg-6 col-md-6 col-sm-6">
+                                        <p class="text-left"><strong>Social: </strong></p>
+                                            {% if data.ig_page == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-danger btn-block disabled">Instagram</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://instagram.com/{{ data.ig_page }}" role="button" class="btn btn-danger btn-block" target="_blank">Instagram</a></p>
+                                            {% endif %}
+
+                                            {% if data.twitter_page == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-info btn-block disabled">Twitter</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://twitter.com/{{ data.twitter_page }}" role="button" class="btn btn-info btn-block" target="_blank">Twitter</a></p>
+                                            {% endif %}
+                                        </div>
+
+                                        {% if data.paid %}
+                                        <div class="col-6 col-lg-6 col-md-6 col-sm-6">
+                                        <p class="text-left"><strong>Profile: </strong></p>
+                                            {% if data.itunes == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-danger btn-block disabled">Apple Music</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://music.apple.com/ng/artist/{{ data.itunes }}" role="button" class="btn btn-danger btn-block" target="_blank">Apple Music</a></p>
+                                            {% endif %}
+
+                                            {% if data.audiomack == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-warning btn-block disabled">Audiomack</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://audiomack.com/{{ data.audiomack }}" role="button" class="btn btn-warning btn-block" target="_blank">Audiomack</a></p>
+                                            {% endif %}
+
+                                            {% if data.soundcloud == None %}
+                                            <p class="m-b-4"><button role="button" class="btn btn-secondary btn-block disabled">SoundCloud</button></p>
+                                            {% else %}
+                                            <p class="m-b-4"><a href="https://soundcloud.com/{{ data.soundcloud }}" role="button" class="btn btn-secondary btn-block" target="_blank">SoundCloud</a></p>
+                                            {% endif %}
+                                        </div>
+                                        {% else %}
+                                            <div class="col-6 col-lg-6 col-md-6 col-sm-6">
+                                            <p class="text-left"><strong>Profile: </strong></p>
+                                            <p class="m-b-4"><button role="button" class="btn btn-danger btn-block disabled">Apple Music</button></p>
+
+                                            <p class="m-b-4"><button role="button" class="btn btn-warning btn-block disabled">Audiomack</button></p>
+
+                                            <p class="m-b-4"><button role="button" class="btn btn-secondary btn-block disabled">SoundCloud</button></p>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                {% if data.paid %}
+                                <hr>
+                                <div class="container">
+                                    <p class="text-left"><strong>Recent Tracks: </strong></p>
+                                {% for song in tracks %}
+                                    {% for item in song.artist_tag.all %}
+                                        {% if data.slug == item.slug %}
+                                            <table class="chart-table">
+                                                {% if song.link %}
+                                                    <tr>
+                                                        <td><a href="{{ song.link }}" target="_blank"><img src="{{ song.artwork.url }}" alt="#" loading="lazy" style="display: block; margin-left: 10px; width: 50px; height: 50px;"></a></td>
+                                                        <td style="float: left; margin-left: 20px; display: inline-block; width: 200px">
+                                                            <a href="{{ song.link }}" target="_blank"><h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ song.title|capfirst }}</h4></a>
+                                                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ song.artist|capfirst }}</p>
+                                                        </td>
+                                                    </tr>
+                                                {% else %}
+                                                    <tr>
+                                                        <td><img src="{{ song.artwork.url }}" alt="#" style="display: block; margin-left: 10px; width: 50px; height: 50px;"></td>
+                                                        <td style="float: left; margin-left: 20px; display: inline-block; width: 200px">
+                                                            <h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ song.title|capfirst }}</h4>
+                                                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ song.artist|capfirst }}</p>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            </table>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                </div>
+                                {% endif %}
+                                <br>
+                                </center>
+                            </div>
+                            <div class="modal-footer">
+                                <center>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close </button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <h5 class="my-2 my-lg-2 ml-3">No Result Found</h5>
+            {% endif %}
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex-wr-c-c m-rl--7 p-t-15">
+        {% if artist.has_other_pages %}
+            {% if artist.has_previous %}
+                <a class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7" href="?page={{ artist.previous_page_number }}"><i class="fa fa-angle-double-left"></i></a>
+            {% endif %}
+
+            {% for num in artist.paginator.page_range %}
+                {% if num == artist.number %}
+                   <a class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > artist.number|add:'-3' and num < artist.number|add:'3' %}
+                    <a class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if artist.has_next %}
+                <a class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7" href="?page={{ artist.next_page_number }}"><i class="fa fa-angle-double-right"></i></a>
+            {% endif %}
+        {% endif %}
+        </div>
+
+        <div class="container m-t-120">
+        {% include "banner.html" %}
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load include_by_ajax_tags %}
+{% load static %}
+
+{% block nav %}
+    {% include "blog/blognav.html" %}
+{% endblock nav %}
+
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+                <a href="{% url 'blog:blog-list' %}" class="breadcrumb-item f1-s-3 cl9">
+					Blog
+				</a>
+				<span class="breadcrumb-item f1-s-3 cl9">
+					Tag
+				</span>
+                <span class="breadcrumb-item f1-s-3 cl9">
+                    {{ tag_title }}
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- Page heading -->
+	<div class="container p-t-4 p-b-80">
+		<h2 class="f1-l-1 cl2" style="text-align: center">
+			Blogs
+		</h2>
+	</div>
+
+
+    <div class="container">
+        <div class="f1-l-4" style="text-align: left;">
+            <span class="cl12" style="font-size: 25px;">Tag: </span> <span style="color: grey;">{{ tag_title }}</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+            <div class="f2-s-1 p-r-30 m-tb-6">
+
+            </div>
+            <form class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+                <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="search" aria-label="Search" name="search" placeholder="Search" value="{{ request.GET.search }}">
+                <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03" type="submit">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Post -->
+    <section class="bg0 p-b-55">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8 p-b-80">
+                    <div class="p-r-10 p-r-0-sr991">
+                        <div class="m-t--65 p-b-40">
+                            <!-- Item Blog -->
+                        {% if posts.count != 0  %}
+                            {% for data in posts %}
+                            <div class="flex-col-s-c how-bor2 p-t-65 p-b-40">
+
+                                <h5 class="p-b-10 txt-center">
+                                    <a href="{% url 'blog:blog-detail' data.slug %}" class="f1-l-2 cl2 hov-cl10 trans-03 respon2" style="font-family: Droid Serif;">
+                                        {{ data.title }}
+                                    </a>
+                                </h5>
+
+                                <div class="cl8 txt-center p-b-15">
+                                    <span class="f1-s-5">
+                                        by <a class="f1-s-5 cl8 hov-cl10 trans-03" href="{% url 'blog:author-detail' data.author.slug %}">{{ data.author }}</a>
+                                    </span>
+
+                                    <span class="f1-s-5 m-rl-3">
+                                        -
+                                    </span>
+
+                                    <span class="f1-s-5">
+                                        {{ data.updated|date:"N j, Y"}}
+                                    </span>
+                                </div>
+
+                                <a href="{% url 'blog:blog-detail' data.slug %}" class="wrap-pic-w hov1 trans-03 m-b-15">
+                                    <img src="{{ data.image.url }}" alt="IMG">
+                                </a>
+
+                                <div class="f1-s-12 cl6 txt-center p-b-2" style="font-family: Droid Serif;">
+                                    {{ data.content|truncatewords_html:30|safe }}
+                                </div>
+
+                                <a href="{% url 'blog:blog-detail' data.slug %}" class="f1-s-1 cl9 hov-cl10 trans-03 mt-3">
+                                    Read More
+                                    <i class="m-l-2 fa fa-angle-double-right"></i>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="m-t-100" style="text-align: center;">
+                                <span style="font-size: 25px; color: #e71d69;">No Results Found</span><br>
+                                <span>
+                                    Sorry, but nothing matched your search terms.
+                                    Please try again with some different keywords.
+                                </span>
+                            </div>
+                        {% endif %}
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="flex-wr-c-c m-rl--7 p-t-15">
+                        {% if posts.has_other_pages %}
+                            {% if posts.has_previous %}
+                                <a class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7" href="?page={{ posts.previous_page_number }}"><i class="fa fa-angle-double-left"></i></a>
+                            {% endif %}
+
+                            {% for num in posts.paginator.page_range %}
+                                {% if num == posts.number %}
+                                   <a class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active" href="?page={{ num }}">{{ num }}</a>
+                                {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+                                    <a class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7" href="?page={{ num }}">{{ num }}</a>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if posts.has_next %}
+                                <a class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7" href="?page={{ posts.next_page_number }}"><i class="fa fa-angle-double-right"></i></a>
+                            {% endif %}
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% include_by_ajax "sidebar.html" %}
+
+            </div>
+        </div>
+    </section>
+{% endblock content %}

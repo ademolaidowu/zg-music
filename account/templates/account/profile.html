@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block style %}
+    <style>
+        hr.divider {
+            margin: 0.5em;
+            border-width: 2px;
+        }
+        .profile-teaser-left {
+            float: left; width: 20%; margin-right: 1%;
+        }
+        .profile-img img {
+            width: 100%; height: auto;
+        }
+        .profile-teaser-main {
+            float: left; width: 79%;
+        }
+        .profile-teaser {
+            float: left; width: 100%;
+        }
+    </style>
+{% endblock style %}
+
+{% block content %}
+	<!-- Breadcrumb -->
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<div class="f2-s-1 p-r-30 m-tb-6">
+				<a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
+					Home
+				</a>
+                <span class="breadcrumb-item f1-s-3 cl9">
+					Account
+				</span>
+				<span class="breadcrumb-item f1-s-3 cl9">
+					Profile
+				</span>
+			</div>
+		</div>
+	</div>
+
+    <!-- Page heading -->
+	<div class="container p-t-4 p-b-150">
+		<h2 class="f1-l-1 cl2" style="text-align: center">
+			Profile
+		</h2>
+	</div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 p-b-80">
+                <div class="p-r-10 p-r-0-sr991">
+                    <div class="m-t--65 p-b-40">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="list-group">
+                                    <div class="list-group-item clearfix">
+                                        <div class="profile-teaser-left">
+                                            <div class="profile-img"><img class="rounded-circle" src="{{ user.userprofile.image.url }}"/></div>
+                                        </div>
+
+                                        <div class="profile-teaser-main cl12" style="font-size: 16px; font-family: Droid Serif;">
+                                            Username: <span style="color: grey;">{{ user.username }}</span>
+                                        </div>
+
+                                        <div class="profile-teaser-main">
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle btn-dark btn-sm" data-toggle="dropdown" href="#">
+                                                    Menu
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" style="text-align: center; background-color: lightgrey;">
+                                                    <li><a style="color: #e71d69;" href="{% url 'account:songsubmission-view' %}">Song Submission</a></li>
+                                                    <hr class="divider">
+
+                                                    {% if user.userprofile.is_artist %}
+                                                    <li><a style="color: #e71d69;" href="{% url 'account:artistapplication-view' %}">Update Artist Info</a></li>
+                                                    <hr class="divider">
+                                                    {% else %}
+                                                    <li><a style="color: #e71d69;" href="{% url 'account:artistapplication-view' %}">Artist Application</a></li>
+                                                    <hr class="divider">
+                                                    {% endif %}
+
+                                                    <li><a style="color: #e71d69;" href="{% url 'password_reset' %}">Password Reset</a></li>
+                                                    <hr class="divider">
+
+                                                    <li><a style="color: #e71d69;" href="{% url 'account:logout' %}">Logout</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-teaser cl12" style="font-family: Droid Serif; font-size: 10pt;">
+                                            <i class="fa fa-envelope-square"></i>: <span style="color: grey;">{{ user }}</span>
+                                        </div>
+
+                                        {% if user.userprofile.is_artist %}
+                                            <div class="profile-teaser cl12" style="font-size: 13px; font-family: Droid Serif;">
+                                                Stage Name: {{ user.userprofile.artist_user.name|capfirst }}
+                                                <p>{{ user.userprofile.artist_user.category.all|join:', ' }}</p>
+                                            </div>
+                                        {% endif %}
+                                    </div><!-- item -->
+                                </div>
+                            </div>
+                        </div>
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a style="color: darkred;" class="nav-item nav-link active" id="nav-info-tab" data-toggle="tab" href="#nav-info" role="tab" aria-controls="nav-info" aria-selected="true">Info</a>
+                                {% if user.userprofile.is_artist %}
+                                <a style="color: darkred;" class="nav-item nav-link" id="nav-card-tab" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false">Card</a>
+                                {% endif %}
+                                <a style="color: darkred;" class="nav-item nav-link" id="nav-events-tab" data-toggle="tab" href="#nav-events" role="tab" aria-controls="nav-events" aria-selected="false">Events</a>
+                            </div>
+                        </nav>
+
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
+                                <div class="container mt-5">
+                                    <div>
+                                    <div class="col-lg-6">
+                                        <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+                                            <fieldset class="form-group">
+                                                {{ u_form|crispy }}
+                                                {{ p_form|crispy }}
+                                            </fieldset>
+                                            <div class="form-group">
+                                                <button class="btn btn-dark btn-default" type="submit">Update</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab">
+                                <div class="our-team">
+                                    <div class="picture">
+                                        <img class="img-fluid" src="{{ user.userprofile.artist_user.image.url }}">
+                                    </div>
+                                    <div class="team-content">
+                                        <div class="name">
+                                            <a href="#aboutModal" data-toggle="modal" data-target="#cardmodal" style="color: darkred; font-size: 18px;"><strong>{{ user.userprofile.artist_user.name|capfirst }}</strong></a>
+                                        </div>
+                                        <h4 class="title"><strong>{{ user.userprofile.artist_user.category.all|join:'/' }}</strong></h4>
+                                        <h4 class="title"><strong>{{ user.userprofile.artist_user.university }}</strong></h4>
+                                    </div>
+                                    <ul class="social">
+                                        {% if user.userprofile.artist_user.ig_page == None %}
+                                            <li><a href="#" class="fa fa-instagram" aria-hidden="true"></a></li>
+                                        {% else %}
+                                            <li><a href="https://instagram.com/{{ user.userprofile.artist_user.ig_page }}" class="fa fa-instagram" target="_blank" aria-hidden="true"></a></li>
+                                        {% endif %}
+
+                                        {% if user.userprofile.artist_user.twitter_page == None %}
+                                            <li><a href="#" class="fa fa-twitter" aria-hidden="true"></a></li>
+                                        {% else %}
+                                            <li><a href="https://twitter.com/{{ user.userprofile.artist_user.twitter_page }}" class="fa fa-twitter" target="_blank" aria-hidden="true"></a></li>
+                                        {% endif %}
+
+                                        {% if user.userprofile.artist_user.itunes == None %}
+                                            <li><a href="#" class="fab fa-itunes-note" aria-hidden="true"></a></li>
+                                        {% else %}
+                                            <li><a href="https://music.apple.com/ng/artist/{{ user.userprofile.artist_user.itunes }}" class="fab fa-itunes-note" target="_blank" aria-hidden="true"></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="cardmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                <h4 class="modal-title" id="myModalLabel"><strong>More About {{ user.userprofile.artist_user.name }}</strong></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <center>
+                                                <img src="{{ user.userprofile.artist_user.image.url }}" name="aboutme" width="140" height="140" border="0" class="img-circle">
+                                                <div class="media-heading" style="color: darkred; font-size: 30px;"><strong>{{ user.userprofile.artist_user.name|capfirst }}</strong></div>
+                                                    <span><strong>{{ user.userprofile.artist_user.category.all|join:', ' }}</strong></span><br>
+                                                    <span><strong>{{ user.userprofile.artist_user.university }}</strong></span>
+                                                </center>
+                                                <hr>
+                                                <center>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-6 col-lg-6 col-md-6 col-sm-6">
+                                                        <p class="text-left"><strong>Social: </strong></p>
+                                                            {% if user.userprofile.artist_user.ig_page == None %}
+                                                            <p class="m-b-4"><button role="button" class="btn btn-danger btn-block disabled">Instagram</button></p>
+                                                            {% else %}
+                                                            <p class="m-b-4"><a href="https://instagram.com/{{ user.userprofile.artist_user.ig_page }}" role="button" class="btn btn-danger btn-block" target="_blank">Instagram</a></p>
+                                                            {% endif %}
+
+                                                            {% if user.userprofile.artist_user.twitter_page == None %}
+                                                            <p class="m-b-4"><button role="button" class="btn btn-info btn-block disabled">Twitter</button></p>
+                                                            {% else %}
+                                                            <p class="m-b-4"><a href="https://twitter.com/{{ user.userprofile.artist_user.twitter_page }}" role="button" class="btn btn-info btn-block" target="_blank">Twitter</a></p>
+                                                            {% endif %}
+                                                        </div>
+
+                                                        {% if user.userprofile.artist_user.paid %}
+                                                        <div class="col-6 col-lg-6 col-md-6 col-sm-6">
+                                                        <p class="text-left"><strong>Profile: </strong></p>
+                                                            {% if user.userprofile.artist_user.itunes == None %}
+                                                            <p class="m-b-4"><button role="button" class="btn btn-danger btn-block disabled">Apple Music</button></p>
+                                                            {% else %}
+                                                            <p class="m-b-4"><a href="https://music.apple.com/ng/artist/{{ user.userprofile.artist_user.itunes }}" role="button" class="btn btn-danger btn-block" target="_blank">Apple Music</a></p>
+                                                            {% endif %}
+
+                                                            {% if user.userprofile.artist_user.audiomack == None %}
+                                                            <p class="m-b-4"><button role="button" class="btn btn-warning btn-block disabled">Audiomack</button></p>
+                                                            {% else %}
+                                                            <p class="m-b-4"><a href="https://audiomack.com/{{ user.userprofile.artist_user.audiomack }}" role="button" class="btn btn-warning btn-block" target="_blank">Audiomack</a></p>
+                                                            {% endif %}
+
+                                                            {% if user.userprofile.artist_user.soundcloud == None %}
+                                                            <p class="m-b-4"><button role="button" class="btn btn-secondary btn-block disabled">SoundCloud</button></p>
+                                                            {% else %}
+                                                            <p class="m-b-4"><a href="https://soundcloud.com/{{ user.userprofile.artist_user.soundcloud }}" role="button" class="btn btn-secondary btn-block" target="_blank">SoundCloud</a></p>
+                                                            {% endif %}
+                                                        </div>
+                                                        {% else %}
+                                                            <div class="col-6 col-lg-6 col-md-6 col-sm-6">
+                                                            <p class="text-left"><strong>Profile: </strong></p>
+                                                            <p class="m-b-4"><button role="button" class="btn btn-danger btn-block disabled">Apple Music</button></p>
+
+                                                            <p class="m-b-4"><button role="button" class="btn btn-warning btn-block disabled">Audiomack</button></p>
+
+                                                            <p class="m-b-4"><button role="button" class="btn btn-secondary btn-block disabled">SoundCloud</button></p>
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+
+                                                {% if user.userprofile.artist_user.paid %}
+                                                <hr>
+                                                <div class="container">
+                                                    <p class="text-left"><strong>Recent Tracks: </strong></p>
+                                                {% for song in tracks %}
+                                                    {% for item in song.artist_tag.all %}
+                                                        {% if user.userprofile.artist_user.slug == item.slug %}
+                                                            <table class="chart-table">
+                                                                {% if song.link %}
+                                                                    <tr>
+                                                                        <td><a href="{{ song.link }}" target="_blank"><img src="{{ song.artwork.url }}" alt="#" loading="lazy" style="display: block; margin-left: 10px; width: 50px; height: 50px;"></a></td>
+                                                                        <td style="float: left; margin-left: 20px; display: inline-block; width: 200px">
+                                                                            <a href="{{ song.link }}" target="_blank"><h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ song.title|capfirst }}</h4></a>
+                                                                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ song.artist|capfirst }}</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                {% else %}
+                                                                    <tr>
+                                                                        <td><img src="{{ song.artwork.url }}" alt="#" style="display: block; margin-left: 10px; width: 50px; height: 50px;"></td>
+                                                                        <td style="float: left; margin-left: 20px; display: inline-block; width: 200px">
+                                                                            <h4 class="f1-m-4" style="color: darkred; line-height: normal;">{{ song.title|capfirst }}</h4>
+                                                                            <p class="f1-s-11" style="color: darkred; line-height: normal;">{{ song.artist|capfirst }}</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                        </table>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                                <br>
+                                                </center>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <center>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close </button>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
+                                <div class="m-t-80" style="color: darkred; font-size: 18px; text-align: center;">No Events Available</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
